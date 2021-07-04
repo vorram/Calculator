@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Calculator</title>
+        <meta name="description" content="A simple calculator.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class='calc-border'>
+            <div class='above-display'>
+                <div class="fluff-text">
+                    <div class='brand'><p>TinkerTech</p></div>
+                    <div class='model'><p>BSC-10</p></div>
+                    <div class='revision'><p>Rev. 1.0</p></div>
+                </div>
+                <div class="battery">
+                    <div class='solar-battery'>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <p>12 digit calculator</p>
+                </div>
+            </div>
+            <div class='display'>
+                <div class='display-operations'>
+                    <div class='ops' id='op-add'>+</div>
+                    <div class='ops' id='op-sub'>-</div>
+                    <div class='ops' id='op-mul'>×</div>
+                    <div class='ops' id='op-div'>÷</div>
+                </div>
+                <div class='display-numbers'></div>
+            </div>
+            <div class='controls'>
+                <div class='button-row'>
+                    <button class='number' id='seven' value='7'>7</button>
+                    <button class='number' id='eight' value='8'>8</button>
+                    <button class='number' id='nine' value='9'>9</button>
+                    <button id='delete'>DEL</button>
+                    <button id='clear'>AC</button>
+                </div>
+                <div class='button-row'>
+                    <button class='number' id='four' value='4'>4</button>
+                    <button class='number' id='five' value='5'>5</button>
+                    <button class='number' id='six' value='6'>6</button>
+                    <button class='operation' id='multiply' value='mul'>×</button>
+                    <button class='operation' id='divide' value='div'>÷</button>
+                </div>
+                <div class='button-row'>
+                    <button class='number' id='one' value='1'>1</button>
+                    <button class='number' id='two' value='2'>2</button>
+                    <button class='number' id='three' value='3'>3</button>
+                    <button class='operation' id='add' value='add'>+</button>
+                    <button class='operation' id='subtract' value='sub'>-</button>
+                </div>
+                <div class='button-row'>
+                    <button class='number' id='zero' value='0'>0</button>
+                    <button class='number' id='double-zero' value='00'>00</button>
+                    <button class='number' id='decimal' value='.'>.</button>
+                    <button id='equals'>=</button>
+                </div>
+            </div>
+        </div>
+        <script src="script.js" async defer></script>
+    </body>
+</html>
