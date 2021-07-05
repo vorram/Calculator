@@ -30,6 +30,7 @@ let operation = null;
 let previousOperation = null;
 let chained = false;
 let numberInput = false;
+let decimals = null;
 const display = document.querySelector('.display-numbers');
 let displayed = display.textContent = '0';
 const opAdd = document.querySelector('#op-add');
@@ -42,7 +43,7 @@ function numberButton(e) {
         displayed = '';
         reset = false;
     }
-    if (displayed.length < 12 && !(displayed.length === 11 && e.target.value === '00')) {
+    if ((displayed.length < 12 && !(displayed.length === 11 && e.target.value === '00')) || (operationActive && displayed.length === 12)) {
     if (!operationActive) {
         displayed += e.target.value;
     } else {
@@ -50,7 +51,14 @@ function numberButton(e) {
         displayed += e.target.value;
         operationActive = false;
     }
+    if (e.target.value === '.') {
+        decimals++;
+        if (decimals > 1) {
+            displayed = displayed.slice(0, -1);
+        }
     }
+
+    } 
     if (!chained) {
         number1 = null;
         result = null;
@@ -117,6 +125,7 @@ function operationButton(e) {
     }
     chained = true;
     numberInput = false;
+    decimals = null;
 }
 
 const operationButtons = document.querySelectorAll('.operation');
@@ -146,6 +155,7 @@ function equals() {
     display.textContent = result;
     operationActive = true;
     chained = false;
+    decimals = null;
     opAdd.style.color = 'transparent';
     opSub.style.color = 'transparent';
     opMul.style.color = 'transparent';
@@ -158,6 +168,9 @@ equalsButton.addEventListener('click', function(e) {
 }); 
 
 function deleteB() {
+    if (displayed.charAt(displayed.length-1) === '.') {
+        decimals = null;
+    }
     displayed = displayed.slice(0, displayed.length-1);
     if (operationActive) {
         result = result.slice(0, result.length-1);
@@ -183,6 +196,7 @@ function clearB() {
     operation = null;
     chained = false;
     numberInput = false;
+    decimals = null;
     opAdd.style.color = 'transparent';
     opSub.style.color = 'transparent';
     opMul.style.color = 'transparent';
@@ -198,10 +212,109 @@ clearButton.addEventListener('click', function(e) {
 
 function toTwelve() {
     if (result.length > 12) {
-    if (result.search(/[.]/) !== -1) {
-        result = result.slice(0, 12);
-    } else {
-        result = result.slice(0, 6) + '×10^' + (result.length-6);
-    }
+        if (result.charAt(0) === '-') {
+            if (result.search(/[.]/) === -1) {
+                result = '-' + result.charAt(1) + '.' + result.slice(2,7) + 'e+' + (result.length-1);
+            } else {
+                if (result.search(/[e]/) !== -1) {
+                    result = result.slice(0, 7) + result.slice(-4);
+                } else {
+                    if (result.search(/[.]/) > 10) {
+                        result = '-' + result.charAt(1) + '.' + result.slice(2,7) + 'e+' + (result.search(/[.]/)-1);
+                    } else {
+                        result = result.slice(0, 11);
+                    }
+                }
+            }
+        } else {
+            if (result.search(/[.]/) === -1) {
+                result = result.charAt(0) + '.' + result.slice(1,7) + 'e+' + (result.length-1);
+            } else {
+                if (result.search(/[e]/) !== -1) {
+                    result = result.slice(0, 8) + result.slice(-4);
+                } else {
+                    if (result.search(/[.]/) > 10) {
+                        result = result.charAt(0) + '.' + result.slice(1,7) + 'e+' + (result.search(/[.]/)-1);
+                    } else {
+                        result = result.slice(0, 11);
+                    }
+                }
+            }
+        }
     }
 }
+
+//Keyboard mapping
+
+document.addEventListener('keydown', function(e) {
+    console.log(e.code);
+    if (e.code === 'Digit1') {
+        e.target.value = '1';
+        numberButton(e);
+    } 
+    if (e.code === 'Digit2') {
+        e.target.value = '2';
+        numberButton(e);
+    }
+    if (e.code === 'Digit3') {
+        e.target.value = '3';
+        numberButton(e);
+    }
+    if (e.code === 'Digit4') {
+        e.target.value = '4';
+        numberButton(e);
+    }
+    if (e.code === 'Digit5') {
+        e.target.value = '5';
+        numberButton(e);
+    }
+    if (e.code === 'Digit6') {
+        e.target.value = '6';
+        numberButton(e);
+    }
+    if (e.code === 'Digit7') {
+        e.target.value = '7';
+        numberButton(e);
+    }
+    if (e.key === '8') {
+        e.target.value = '8';
+        numberButton(e);
+    }
+    if (e.code === 'Digit9') {
+        e.target.value = '9';
+        numberButton(e);
+    }
+    if (e.code === 'Digit0') {
+        e.target.value = '0';
+        numberButton(e);
+    }
+    if (e.code === 'Period') {
+        e.target.value = '.';
+        numberButton(e);
+    }
+    if (e.key === 'Enter') {
+        equals(e);
+    }
+    if (e.code === 'Backspace') {
+        deleteB(e);
+    }
+    if (e.code === 'Delete') {
+        clearB(e);
+    }
+    if (e.code === 'Minus') {
+        e.target.value = 'sub';
+        operationButton(e);
+    }
+    if (e.key === '*') {
+        e.target.value = 'mul';
+        operationButton(e);
+    }
+    if (e.key === '+') {
+        e.target.value = 'add';
+        operationButton(e);
+    }
+    if (e.code === 'Slash') {
+        e.target.value = 'div';
+        operationButton(e);
+    }
+}); 
